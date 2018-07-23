@@ -32,9 +32,26 @@ let playerTwo = {
 	speed: 15
 };
 
+document.addEventListener("keydown", function(e){
+	keys[e.keyCode] = true;	
+});
+
+document.addEventListener("keyup", function(e){
+	delete keys[e.keyCode];
+});
+
+function moveBlock(){
+	if(87 in keys && left.y > 0)
+		left.y -= left.speed;
+}
+
 function toDraw() {
 	ctx.fillStyle = "white";
 	ctx.fillRect(playerOne.x, playerOne.y, playerOne.width, playerOne.height);
 	ctx.fillRect(playerTwo.x, playerTwo.y, playerTwo.width, playerTwo.height);
 	ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
+
+	ctx.font = "20px Arial";
+	ctx.fillText("Player 1:" + left.score, 50, 20);
+	ctx.fillText("Player 2:" + right.score, canvas.width - 150, 20);
 }
