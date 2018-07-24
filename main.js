@@ -54,6 +54,23 @@ function moveBlock() {
 		playerTwo.y += playerTwo.speed;
 }
 
+function moveBall(){
+	if(ball.y + ball.height >= playerOne.y && ball.y <= playerOne.y + playerOne.height && ball.x <= playerOne.x + playerOne.height)
+		ball.dirX = 1;
+	
+	else if(ball.y + ball.height >= playerTwo.y && ball.y <= playerTwo.y + playerTwo.height && ball.x + ball.height >= playerTwo.x)
+		ball.dirX = -1;
+
+	if(ball.y <= 0)
+		ball.dirY = 1;
+
+	else if(ball.y + ball.height >= canvas.height)
+		ball.dirY = -1;
+		
+	ball.x += ball.speed * ball.dirX;
+	ball.y += ball.speed * ball.dirY;
+}
+
 function toDraw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	moveBlock();
