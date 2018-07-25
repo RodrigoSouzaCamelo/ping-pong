@@ -11,7 +11,7 @@ let ball = {
 	dirX: -1,
 	dirY: 1,
 	mod: 0,
-	speed: 50,
+	speed: 1,
 };
 
 let playerOne = {
@@ -55,11 +55,15 @@ function moveBlock() {
 }
 
 function moveBall(){
-	if(ball.y + ball.height >= playerOne.y && ball.y <= playerOne.y + playerOne.height && ball.x <= playerOne.x + playerOne.height)
+	if(ball.y + ball.height >= playerOne.y && ball.y <= playerOne.y + playerOne.height && ball.x <= playerOne.x + playerOne.height){
 		ball.dirX = 1;
+		ball.mod += 0.2;
+	}
 	
-	else if(ball.y + ball.height >= playerTwo.y && ball.y <= playerTwo.y + playerTwo.height && ball.x + ball.height >= playerTwo.x)
+	else if(ball.y + ball.height >= playerTwo.y && ball.y <= playerTwo.y + playerTwo.height && ball.x + ball.height >= playerTwo.x){
 		ball.dirX = -1;
+		ball.mod += 0.2
+	}
 
 	if(ball.y <= 0)
 		ball.dirY = 1;
@@ -67,13 +71,33 @@ function moveBall(){
 	else if(ball.y + ball.height >= canvas.height)
 		ball.dirY = -1;
 		
-	ball.x += ball.speed * ball.dirX;
-	ball.y += ball.speed * ball.dirY;
+	ball.x += (ball.speed + ball.mod) * ball.dirX;
+	ball.y += (ball.speed + ball.mod) * ball.dirY;
+
+	if(ball.x < playerOne.x + playerOne.height){
+		newGame("Player 2");
+	} else if(ball.x + ball.height > playerTwo.x) {
+		newGame("Player 1");
+	}
+}
+
+function newGame(winner){
+	if(winner == "Player 1")
+		playerOne.score++;
+	else
+		playerTwo.score++;
+
+	playerOne.y = canvas.height / 2 - playerOne.height / 2;
+	playerTwo.y = playerOne.y;
+	ball.y = canvas.height / 2 - ball.height / 2;
+	ball.x = canvas.height / 2 - ball.height / 2;
+	ball.mod = 0;
 }
 
 function toDraw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	moveBlock();
+	moveBall();
 
 	ctx.fillStyle = "white";
 	ctx.fillRect(playerOne.x, playerOne.y, playerOne.width, playerOne.height);
