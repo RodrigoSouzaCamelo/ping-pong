@@ -20,16 +20,16 @@ let playerOne = {
 	height: 120,
 	width: 30,
 	score: 0,
-	speed: 15
+	speed: 10
 };
 
 let playerTwo = {
-	x: 560,
+	x: canvas.width - 40,
 	y: canvas.height / 2 - 60,
 	height: 120,
 	width: 30,
 	score: 0,
-	speed: 15
+	speed: 10
 };
 
 document.addEventListener("keydown", function (e) {
@@ -55,14 +55,14 @@ function moveBlock() {
 }
 
 function moveBall(){
-	if(ball.y + ball.height >= playerOne.y && ball.y <= playerOne.y + playerOne.height && ball.x <= playerOne.x + playerOne.height){
+	if(ball.y + ball.height >= playerOne.y && ball.y <= playerOne.y + playerOne.height && ball.x <= playerOne.x + playerOne.width){
 		ball.dirX = 1;
 		ball.mod += 0.2;
 	}
 	
 	else if(ball.y + ball.height >= playerTwo.y && ball.y <= playerTwo.y + playerTwo.height && ball.x + ball.height >= playerTwo.x){
 		ball.dirX = -1;
-		ball.mod += 0.2
+		ball.mod += 0.2;
 	}
 
 	if(ball.y <= 0)
@@ -71,14 +71,15 @@ function moveBall(){
 	else if(ball.y + ball.height >= canvas.height)
 		ball.dirY = -1;
 		
-	ball.x += (ball.speed + ball.mod) * ball.dirX;
-	ball.y += (ball.speed + ball.mod) * ball.dirY;
 
-	if(ball.x < playerOne.x + playerOne.height){
+	if(ball.x < playerOne.x){
 		newGame("Player 2");
-	} else if(ball.x + ball.height > playerTwo.x) {
+	} else if(ball.x > playerTwo.x + playerTwo.width) {
 		newGame("Player 1");
 	}
+
+	ball.x += (ball.speed + ball.mod) * ball.dirX;
+	ball.y += (ball.speed + ball.mod) * ball.dirY;
 }
 
 function newGame(winner){
@@ -95,9 +96,9 @@ function newGame(winner){
 }
 
 function toDraw() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	moveBlock();
 	moveBall();
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	ctx.fillStyle = "white";
 	ctx.fillRect(playerOne.x, playerOne.y, playerOne.width, playerOne.height);
