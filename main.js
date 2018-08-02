@@ -11,7 +11,7 @@ let ball = {
 	dirX: -1,
 	dirY: 1,
 	mod: 0,
-	speed: 1,
+	speed: 2,
 };
 
 let playerOne = {
